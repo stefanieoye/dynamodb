@@ -3,7 +3,7 @@ Resources:
   MyFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: my-function
+      FunctionName: my-rfunction
       Handler: index.handler
       Role: !GetAtt MyRole.Arn
       Code:
@@ -12,8 +12,8 @@ Resources:
             const AWS = require('aws-sdk');
             const dynamoDB = new AWS.DynamoDB();
             const s3 = new AWS.S3();
-            const tableName = 'receeve-table';
-            const bucketName = 'receeveb-bucket';
+            const tableName = 'receeves-table';
+            const bucketName = 'receevebs-bucket';
             const timestamp = new Date().toISOString();
             const key = `${tableName}-${timestamp}.json`;
 
@@ -68,7 +68,7 @@ Resources:
   MyTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: receeve-table
+      TableName: receeves-table
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
@@ -85,13 +85,13 @@ Resources:
   MyBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: receeveb-bucket
+      BucketName: receevebs-bucket
       VersioningConfiguration:
         Status: Enabled
   MyEventRule:
     Type: AWS::Events::Rule
     Properties:
-      Name: daily-export-rule
+      Name: daily-export-rule2
       ScheduleExpression: "cron(0 2 * * ? *)" # every day at 2:00 AM UTC
       Targets:
         - Id: "target-lambda"
