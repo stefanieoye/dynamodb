@@ -26,8 +26,4 @@ jobs:
           BUCKET_NAME: 'receeveb-bucket'
           TABLE_NAME: 'receeve-table'
           AWS_REGION: 'us-east-1'
-        env:
-          STACK_NAME: 'receeve-stack'
-          BUCKET_NAME: 'receeveb-bucket'
-          TABLE_NAME: 'receeve-table'
-          AWS_REGION: 'us-east-1'
+    
