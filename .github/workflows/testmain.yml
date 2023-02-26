@@ -1,29 +1,26 @@
-name: Export2 job 
+name: Export job 
 on:
   push:
     paths:
       - 'dynamo-s3.yml'
   workflow_dispatch:
-
 jobs:
-  deploy-stack:
+  export:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
       - name: Deploy CloudFormation stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
-          stack-name: ${{ env.STACK_NAME }}
-          template-path: 'dynamo-s3.yml'
-          capabilities: 'CAPABILITY_NAMED_IAM'
-          parameter-overrides: |
-            BucketName=${{ env.BUCKET_NAME }}
-            TableName=${{ env.TABLE_NAME }}
-          aws-region: ${{ env.AWS_REGION }}
-        env:
-          STACK_NAME: 'receeve-stack'
-          BUCKET_NAME: 'receeveb-bucket'
-          TABLE_NAME: 'receeve-table'
-          AWS_REGION: 'us-east-1'
-    
+          name: receeve-stack
+          template: ./dynamo-s3.yml
+          capabilities: CAPABILITY_NAMED_IAM
+          no-fail-on-empty-changeset: true
+
