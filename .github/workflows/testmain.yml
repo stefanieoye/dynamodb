@@ -1,0 +1,33 @@
+name: Export2 job 
+on:
+  push:
+    paths:
+      - 'dynamo-s3.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy-stack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy CloudFormation stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          stack-name: ${{ env.STACK_NAME }}
+          template-path: 'dynamo-s3.yml'
+          capabilities: 'CAPABILITY_NAMED_IAM'
+          parameter-overrides: |
+            BucketName=${{ env.BUCKET_NAME }}
+            TableName=${{ env.TABLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+        env:
+          STACK_NAME: 'receeve-stack'
+          BUCKET_NAME: 'receeveb-bucket'
+          TABLE_NAME: 'receeve-table'
+          AWS_REGION: 'us-east-1'
+        env:
+          STACK_NAME: 'receeve-stack'
+          BUCKET_NAME: 'receeveb-bucket'
+          TABLE_NAME: 'receeve-table'
+          AWS_REGION: 'us-east-1'
